@@ -1,0 +1,25 @@
+{
+  "sub": "did:key:zQ3shv378PvkMuRrYMGFV9a3MtKpJkteqb2dUbQMEMvtWc2tE",
+  "nbf": 1646007430,
+  "iss": "did:key:zQ3shaWBKgKfo2yk2nncahcpXjdrKVxE2VB3CzEu2MhJwWcZX",
+  "exp": 1646612230,
+  "vc": {
+    "@context": [
+      "https://www.w3.org/2018/credentials/v1",
+      "https://verity.id/identity"
+    ],
+    "type": [
+      "VerifiableCredential",
+      "KYCAMLAttestation"
+    ],
+    "credentialSubject": {
+      "KYCAMLAttestation": {
+        "approvalDate": "2022-02-28T00:17:10.460Z",
+        "process": "https://verite.id/schemas/definitions/1.0.0/kycaml/usa",
+        "type": "KYCAMLAttestation"
+      },
+      "id": "did:key:zQ3shaWBKgKfo2yk2nncahcpXjdrKVxE2VB3CzEu2MhJwWcZX"
+    },
+    "issuanceDate": "2022-02-28T00:17:10.460Z"
+  }
+}
