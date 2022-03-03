@@ -45,7 +45,7 @@ https://issuer-sandbox.circle.com
 ## API Endpoints
 
 
-### GET `/v1/issuance/qrcode`
+### GET `/api/v1/issuance/qrcode`
 
 
 **Description:** This endpoint returns a binary-format QR code. This does not have to be implemented by the dapp. Alternatively, it can begin by scanning the QR code below.
@@ -53,13 +53,13 @@ https://issuer-sandbox.circle.com
 
 <img src="./images/qrcode.png" alt="qrcode" width="200"/>
 
-### GET `/v1/issuance/manifest/kyc`
+### GET `/api/v1/issuance/manifest/kyc`
 
 
 
 **Description:** This endpoint returns a[ CredentialOffer](https://verite.id/docs/appendix/messages#credential-offer). 
 
-Response example
+A simplified response example is shown below, and a complete json is [here](./jsons/CredentialOffer.json).
 
 
 ```json
@@ -67,88 +67,10 @@ Response example
   "body": {
     "challenge": "a2b8266a-b108-48c8-b461-b4a10b369d15",
     "manifest": {
-      "id": "KYCAMLAttestation",
-      "version": "0.1.0",
-      "issuer": {
-        "id": "did:key:zQ3shaWBKgKfo2yk2nncahcpXjdrKVxE2VB3CzEu2MhJwWcZX",
-        "name": "Circle",
-        "styles": {}
-      },
+      ...
       "output_descriptors": [
         {
-          "description": "Attestation that Circle has completed KYC/AML verification for this subject",
-          "display": {
-            "description": {
-              "text": "The KYC authority processes Know Your Customer and Anti-Money Laundering analysis, potentially employing a number of internal and external vendor providers."
-            },
-            "properties": [
-              {
-                "label": "Authority",
-                "path": [
-                  "$.KYCAMLAttestation.authorityName"
-                ],
-                "schema": {
-                  "type": "string"
-                }
-              },
-              {
-                "label": "Authority URL",
-                "path": [
-                  "$.KYCAMLAttestation.authorityUrl"
-                ],
-                "schema": {
-                  "format": "uri",
-                  "type": "string"
-                }
-              },
-              {
-                "label": "Approved At",
-                "path": [
-                  "$.KYCAMLAttestation.approvalDate"
-                ],
-                "schema": {
-                  "format": "date-time",
-                  "type": "string"
-                }
-              }
-            ],
-            "subtitle": {
-              "fallback": "Includes date of approval",
-              "path": [
-                "$.approvalDate",
-                "$.vc.approvalDate"
-              ]
-            },
-            "title": {
-              "fallback": "Verity KYC Attestation",
-              "path": [
-                "$.KYCAMLAttestation.authorityName"
-              ]
-            }
-          },
-          "id": "kycAttestationOutput",
-          "name": "Proof of KYC from Circle",
-          "schema": [
-            {
-              "uri": "https://verity.id/schemas/identity/1.0.0/KYCAMLAttestation"
-            }
-          ],
-          "styles": {
-            "background": {
-              "color": "#EC4899"
-            },
-            "hero": {
-              "uri": "http://127.0.0.1:3000/img/kyc-aml-hero.png",
-              "alt": "KYC+AML Visual"
-            },
-            "text": {
-              "color": "#FFFFFF"
-            },
-            "thumbnail": {
-              "uri": "http://127.0.0.1:3000/img/kyc-aml-thumbnail.png",
-              "alt": "Circle Logo"
-            }
-          }
+          ...
         }
       ],
       "format": {
@@ -164,26 +86,7 @@ Response example
         }
       },
       "presentation_definition": {
-        "format": {
-          "jwt_vp": {
-            "alg": [
-              "ES256K"
-            ]
-          }
-        },
-        "id": "ProofOfControlPresentationDefinition",
-        "input_descriptors": [
-          {
-            "id": "proofOfIdentifierControlVP",
-            "name": "Proof of Control Verifiable Presentation",
-            "purpose": "A Verifiable Presentation establishing proof of identifier control over the DID.",
-            "schema": [
-              {
-                "uri": "https://verity.id/schemas/identity/1.0.0/ProofOfControl"
-              }
-            ]
-          }
-        ]
+        ...
       }
     }
   },
@@ -199,16 +102,16 @@ Response example
 
 
 <br></br>
-### POST `/v1/issuance`
+### POST `/api/v1/issuance`
 
 
 **Description:** dApp submit CredentialApplication to this endpoint and get a CredentialFulfillment. 
 
 CredentialApplication example (JWT)
 
-`{eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkaWQ6a2V5OnpRM3NodjM3OFB2a011UnJZTUdGVjlhM010S3BKa3RlcWIyZFViUU1FTXZ0V2MydEUiLCJpc3MiOiJkaWQ6a2V5OnpRM3NodjM3OFB2a011UnJZTUdGVjlhM010S3BKa3RlcWIyZFViUU1FTXZ0V2MydEUiLCJjcmVkZW50aWFsX2FwcGxpY2F0aW9uIjp7ImlkIjoiNmVkNmY2OTgtM2FmMC00MjA0LWFmZDMtM2E1NTY1YzJjMzA4IiwibWFuaWZlc3RfaWQiOiJLWUNBTUxBdHRlc3RhdGlvbiIsImZvcm1hdCI6eyJqd3RfdnAiOnsiYWxnIjpbIkVTMjU2SyJdfX19LCJwcmVzZW50YXRpb25fc3VibWlzc2lvbiI6eyJpZCI6ImI0ZjQzMzEwLTFkNmItNDI1ZC04NGM2LWY4YWZhYzNmZTI0NCIsImRlZmluaXRpb25faWQiOiJQcm9vZk9mQ29udHJvbFByZXNlbnRhdGlvbkRlZmluaXRpb24iLCJkZXNjcmlwdG9yX21hcCI6W3siaWQiOiJwcm9vZk9mSWRlbnRpZmllckNvbnRyb2xWUCIsImZvcm1hdCI6Imp3dF92cCIsInBhdGgiOiIkLnByZXNlbnRhdGlvbiJ9XX0sInZwIjp7IkBjb250ZXh0IjpbImh0dHBzOi8vd3d3LnczLm9yZy8yMDE4L2NyZWRlbnRpYWxzL3YxIl0sInR5cGUiOlsiVmVyaWZpYWJsZVByZXNlbnRhdGlvbiIsIkNyZWRlbnRpYWxGdWxmaWxsbWVudCJdLCJob2xkZXIiOiJkaWQ6d2ViOmNpcmNsZS5jb20iLCJ2ZXJpZmlhYmxlQ3JlZGVudGlhbCI6WyJleUpoYkdjaU9pSkZaRVJUUVNJc0luUjVjQ0k2SWtwWFZDSjkuLi4uN3d3aS1ZUlgiXX19.HaZI1KivjseuAzItUvDl-TBVHSQ1F_m542-_8sesuLY}`
+`eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkaWQ6a2V5OnpRM3NodjM3OFB2a011UnJZTUdGVjlhM010S3BKa3RlcWIyZFViUU1FTXZ0V2MydEUiLCJpc3MiOiJkaWQ6a2V5OnpRM3NodjM3OFB2a011UnJZTUdGVjlhM010S3BKa3RlcWIyZFViUU1FTXZ0V2MydEUiLCJjcmVkZW50aWFsX2FwcGxpY2F0aW9uIjp7ImlkIjoiNmVkNmY2OTgtM2FmMC00MjA0LWFmZDMtM2E1NTY1YzJjMzA4IiwibWFuaWZlc3RfaWQiOiJLWUNBTUxBdHRlc3RhdGlvbiIsImZvcm1hdCI6eyJqd3RfdnAiOnsiYWxnIjpbIkVTMjU2SyJdfX19LCJwcmVzZW50YXRpb25fc3VibWlzc2lvbiI6eyJpZCI6ImI0ZjQzMzEwLTFkNmItNDI1ZC04NGM2LWY4YWZhYzNmZTI0NCIsImRlZmluaXRpb25faWQiOiJQcm9vZk9mQ29udHJvbFByZXNlbnRhdGlvbkRlZmluaXRpb24iLCJkZXNjcmlwdG9yX21hcCI6W3siaWQiOiJwcm9vZk9mSWRlbnRpZmllckNvbnRyb2xWUCIsImZvcm1hdCI6Imp3dF92cCIsInBhdGgiOiIkLnByZXNlbnRhdGlvbiJ9XX0sInZwIjp7IkBjb250ZXh0IjpbImh0dHBzOi8vd3d3LnczLm9yZy8yMDE4L2NyZWRlbnRpYWxzL3YxIl0sInR5cGUiOlsiVmVyaWZpYWJsZVByZXNlbnRhdGlvbiIsIkNyZWRlbnRpYWxGdWxmaWxsbWVudCJdLCJob2xkZXIiOiJkaWQ6d2ViOmNpcmNsZS5jb20iLCJ2ZXJpZmlhYmxlQ3JlZGVudGlhbCI6WyJleUpoYkdjaU9pSkZaRVJUUVNJc0luUjVjQ0k2SWtwWFZDSjkuLi4uN3d3aS1ZUlgiXX19.HaZI1KivjseuAzItUvDl-TBVHSQ1F_m542-_8sesuLY`
 
-Decode it, it is a json blob.
+Decode it, it is a json blob (the complete json is [here](./jsons/CredentialApplication.json).
 
 
 ```json
@@ -216,76 +119,67 @@ Decode it, it is a json blob.
   "sub": "did:key:zQ3shv378PvkMuRrYMGFV9a3MtKpJkteqb2dUbQMEMvtWc2tE",
   "iss": "did:key:zQ3shv378PvkMuRrYMGFV9a3MtKpJkteqb2dUbQMEMvtWc2tE",
   "credential_application": {
-    "id": "2ce196be-fcda-4054-9eeb-8e4c5ef771e5",
-    "manifest_id": "KYCAMLAttestation",
-    "format": {
-      "jwt_vp": {
-        "alg": ["ES256K"]
-      }
-    }
+    ...
   },
   "presentation_submission": {
-    "id": "b4f43310-1d6b-425d-84c6-f8afac3fe244",
-    "definition_id": "ProofOfControlPresentationDefinition",
-    "descriptor_map": [
-      {
-        "id": "proofOfIdentifierControlVP",
-        "format": "jwt_vp",
-        "path": "$.presentation"
-      }
-    ]
+    ...
   },
   "vp": {
-    "@context": [
-      "https://www.w3.org/2018/credentials/v1"
-    ],
-    "type": [
-      "VerifiablePresentation",
-      "CredentialFulfillment"
-    ],
-    "holder": "did:web:circle.com",
-    "verifiableCredential": [
-      "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9....7wwi-YRX"
-    ]
+    ...
   }
 }
 ```
 
 
-CredentialFulfillment example. JWT
+The returned CredentialFulfillment is also a JWT
 
-`{eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NksifQ.eyJzdWIiOiJkaWQ6a2V5OnpRM3NoYVdCS2dLZm8yeWsybm5jYWhjcFhqZHJLVnhFMlZCM0N6RXUyTWhKd1djWlgiLCJjcmVkZW50aWFsX2Z1bGZpbGxtZW50Ijp7ImRlc2NyaXB0b3JfbWFwIjpbeyJmb3JtYXQiOiJqd3RfdmMiLCJpZCI6InByb29mT2ZJZGVudGlmaWVyQ29udHJvbFZQIiwicGF0aCI6IiQucHJlc2VudGF0aW9uLmNyZWRlbnRpYWxbMF0ifV0sImlkIjoiNmVkNmY2OTgtM2FmMC00MjA0LWFmZDMtM2E1NTY1YzJjMzA4IiwibWFuaWZlc3RfaWQiOiJLWUNBTUxBdHRlc3RhdGlvbiJ9LCJpc3MiOiJkaWQ6a2V5OnpRM3NoYVdCS2dLZm8yeWsybm5jYWhjcFhqZHJLVnhFMlZCM0N6RXUyTWhKd1djWlgiLCJ2cCI6eyJAY29udGV4dCI6WyJodHRwczovL3d3dy53My5vcmcvMjAxOC9jcmVkZW50aWFscy92MSJdLCJ0eXBlIjpbIlZlcmlmaWFibGVQcmVzZW50YXRpb24iLCJDcmVkZW50aWFsRnVsZmlsbG1lbnQiXSwiaG9sZGVyIjoiZGlkOmtleTp6UTNzaGFXQktnS2ZvMnlrMm5uY2FoY3BYamRyS1Z4RTJWQjNDekV1Mk1oSndXY1pYIiwidmVyaWZpYWJsZUNyZWRlbnRpYWwiOlsiZXlKMGVYQWlPaUpLVjFRaUxDSmhiR2NpT2lKRlV6STFOa3NpZlEuZXlKemRXSWlPaUprYVdRNmEyVjVPbnBSTTNOb2RqTTNPRkIyYTAxMVVuSlpUVWRHVmpsaE0wMTBTM0JLYTNSbGNXSXlaRlZpVVUxRlRYWjBWMk15ZEVVaUxDSnVZbVlpT2pFMk5EWXdNRGMwTXpBc0ltbHpjeUk2SW1ScFpEcHJaWGs2ZWxFemMyaGhWMEpMWjB0bWJ6SjVhekp1Ym1OaGFHTndXR3BrY2t0V2VFVXlWa0l6UTNwRmRUSk5hRXAzVjJOYVdDSXNJbVY0Y0NJNk1UWTBOall4TWpJek1Dd2lkbU1pT25zaVFHTnZiblJsZUhRaU9sc2lhSFIwY0hNNkx5OTNkM2N1ZHpNdWIzSm5Mekl3TVRndlkzSmxaR1Z1ZEdsaGJITXZkakVpTENKb2RIUndjem92TDNabGNtbDBlUzVwWkM5cFpHVnVkR2wwZVNKZExDSjBlWEJsSWpwYklsWmxjbWxtYVdGaWJHVkRjbVZrWlc1MGFXRnNJaXdpUzFsRFFVMU1RWFIwWlhOMFlYUnBiMjRpWFN3aVkzSmxaR1Z1ZEdsaGJGTjFZbXBsWTNRaU9uc2lTMWxEUVUxTVFYUjBaWE4wWVhScGIyNGlPbnNpWVhCd2NtOTJZV3hFWVhSbElqb2lNakF5TWkwd01pMHlPRlF3TURveE56b3hNQzQwTmpCYUlpd2ljSEp2WTJWemN5STZJbWgwZEhCek9pOHZkbVZ5YVhSbExtbGtMM05qYUdWdFlYTXZaR1ZtYVc1cGRHbHZibk12TVM0d0xqQXZhM2xqWVcxc0wzVnpZU0lzSW5SNWNHVWlPaUpMV1VOQlRVeEJkSFJsYzNSaGRHbHZiaUo5TENKcFpDSTZJbVJwWkRwclpYazZlbEV6YzJoaFYwSkxaMHRtYnpKNWF6SnVibU5oYUdOd1dHcGtja3RXZUVVeVZrSXpRM3BGZFRKTmFFcDNWMk5hV0NKOUxDSnBjM04xWVc1alpVUmhkR1VpT2lJeU1ESXlMVEF5TFRJNFZEQXdPakUzT2pFd0xqUTJNRm9pZlgwLlJPTzY5T3R2T0dERTJGeUV0Wk9rMVhGajZWTnQwUGpTbndXMm01X3I0RlNGbTgwTkhQZkRQdDZUZTE5SDNqcVVpM2NwYXZIWG5LZlROLVdORHQwdXJnIl19fQ.WRlC9nGx4uxaQ4ab_pV1F0_vJT_GzAWP5-wIYhL3v3eU95ncUkOlQ5d4qvhEyYuT5X0EQ71ZshWr6wVcEPE7_w}`
+`eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NksifQ.eyJzdWIiOiJkaWQ6a2V5OnpRM3NoYVdCS2dLZm8yeWsybm5jYWhjcFhqZHJLVnhFMlZCM0N6RXUyTWhKd1djWlgiLCJjcmVkZW50aWFsX2Z1bGZpbGxtZW50Ijp7ImRlc2NyaXB0b3JfbWFwIjpbeyJmb3JtYXQiOiJqd3RfdmMiLCJpZCI6InByb29mT2ZJZGVudGlmaWVyQ29udHJvbFZQIiwicGF0aCI6IiQucHJlc2VudGF0aW9uLmNyZWRlbnRpYWxbMF0ifV0sImlkIjoiNmVkNmY2OTgtM2FmMC00MjA0LWFmZDMtM2E1NTY1YzJjMzA4IiwibWFuaWZlc3RfaWQiOiJLWUNBTUxBdHRlc3RhdGlvbiJ9LCJpc3MiOiJkaWQ6a2V5OnpRM3NoYVdCS2dLZm8yeWsybm5jYWhjcFhqZHJLVnhFMlZCM0N6RXUyTWhKd1djWlgiLCJ2cCI6eyJAY29udGV4dCI6WyJodHRwczovL3d3dy53My5vcmcvMjAxOC9jcmVkZW50aWFscy92MSJdLCJ0eXBlIjpbIlZlcmlmaWFibGVQcmVzZW50YXRpb24iLCJDcmVkZW50aWFsRnVsZmlsbG1lbnQiXSwiaG9sZGVyIjoiZGlkOmtleTp6UTNzaGFXQktnS2ZvMnlrMm5uY2FoY3BYamRyS1Z4RTJWQjNDekV1Mk1oSndXY1pYIiwidmVyaWZpYWJsZUNyZWRlbnRpYWwiOlsiZXlKMGVYQWlPaUpLVjFRaUxDSmhiR2NpT2lKRlV6STFOa3NpZlEuZXlKemRXSWlPaUprYVdRNmEyVjVPbnBSTTNOb2RqTTNPRkIyYTAxMVVuSlpUVWRHVmpsaE0wMTBTM0JLYTNSbGNXSXlaRlZpVVUxRlRYWjBWMk15ZEVVaUxDSnVZbVlpT2pFMk5EWXdNRGMwTXpBc0ltbHpjeUk2SW1ScFpEcHJaWGs2ZWxFemMyaGhWMEpMWjB0bWJ6SjVhekp1Ym1OaGFHTndXR3BrY2t0V2VFVXlWa0l6UTNwRmRUSk5hRXAzVjJOYVdDSXNJbVY0Y0NJNk1UWTBOall4TWpJek1Dd2lkbU1pT25zaVFHTnZiblJsZUhRaU9sc2lhSFIwY0hNNkx5OTNkM2N1ZHpNdWIzSm5Mekl3TVRndlkzSmxaR1Z1ZEdsaGJITXZkakVpTENKb2RIUndjem92TDNabGNtbDBlUzVwWkM5cFpHVnVkR2wwZVNKZExDSjBlWEJsSWpwYklsWmxjbWxtYVdGaWJHVkRjbVZrWlc1MGFXRnNJaXdpUzFsRFFVMU1RWFIwWlhOMFlYUnBiMjRpWFN3aVkzSmxaR1Z1ZEdsaGJGTjFZbXBsWTNRaU9uc2lTMWxEUVUxTVFYUjBaWE4wWVhScGIyNGlPbnNpWVhCd2NtOTJZV3hFWVhSbElqb2lNakF5TWkwd01pMHlPRlF3TURveE56b3hNQzQwTmpCYUlpd2ljSEp2WTJWemN5STZJbWgwZEhCek9pOHZkbVZ5YVhSbExtbGtMM05qYUdWdFlYTXZaR1ZtYVc1cGRHbHZibk12TVM0d0xqQXZhM2xqWVcxc0wzVnpZU0lzSW5SNWNHVWlPaUpMV1VOQlRVeEJkSFJsYzNSaGRHbHZiaUo5TENKcFpDSTZJbVJwWkRwclpYazZlbEV6YzJoaFYwSkxaMHRtYnpKNWF6SnVibU5oYUdOd1dHcGtja3RXZUVVeVZrSXpRM3BGZFRKTmFFcDNWMk5hV0NKOUxDSnBjM04xWVc1alpVUmhkR1VpT2lJeU1ESXlMVEF5TFRJNFZEQXdPakUzT2pFd0xqUTJNRm9pZlgwLlJPTzY5T3R2T0dERTJGeUV0Wk9rMVhGajZWTnQwUGpTbndXMm01X3I0RlNGbTgwTkhQZkRQdDZUZTE5SDNqcVVpM2NwYXZIWG5LZlROLVdORHQwdXJnIl19fQ.WRlC9nGx4uxaQ4ab_pV1F0_vJT_GzAWP5-wIYhL3v3eU95ncUkOlQ5d4qvhEyYuT5X0EQ71ZshWr6wVcEPE7_w}`
 
-Decode it
+Decode it to a json blob (A complete json is [here](./jsons/CredentialFulfillment.json)).
 
 
 ```json
 {
   "sub": "did:key:zQ3shaWBKgKfo2yk2nncahcpXjdrKVxE2VB3CzEu2MhJwWcZX",
   "credential_fulfillment": {
-    "descriptor_map": [
-      {
-        "format": "jwt_vc",
-        "id": "proofOfIdentifierControlVP",
-        "path": "$.presentation.credential[0]"
-      }
-    ],
-    "id": "6ed6f698-3af0-4204-afd3-3a5565c2c308",
-    "manifest_id": "KYCAMLAttestation"
+    ...
   },
   "iss": "did:key:zQ3shaWBKgKfo2yk2nncahcpXjdrKVxE2VB3CzEu2MhJwWcZX",
   "vp": {
-    "@context": [
-      "https://www.w3.org/2018/credentials/v1"
-    ],
-    "type": [
-      "VerifiablePresentation",
-      "CredentialFulfillment"
-    ],
-    "holder": "did:key:zQ3shaWBKgKfo2yk2nncahcpXjdrKVxE2VB3CzEu2MhJwWcZX",
+    ...
     "verifiableCredential": [
       "eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NksifQ.eyJzdWIiOiJkaWQ6a2V5OnpRM3NodjM3OFB2a011UnJZTUdGVjlhM010S3BKa3RlcWIyZFViUU1FTXZ0V2MydEUiLCJuYmYiOjE2NDYwMDc0MzAsImlzcyI6ImRpZDprZXk6elEzc2hhV0JLZ0tmbzJ5azJubmNhaGNwWGpkcktWeEUyVkIzQ3pFdTJNaEp3V2NaWCIsImV4cCI6MTY0NjYxMjIzMCwidmMiOnsiQGNvbnRleHQiOlsiaHR0cHM6Ly93d3cudzMub3JnLzIwMTgvY3JlZGVudGlhbHMvdjEiLCJodHRwczovL3Zlcml0eS5pZC9pZGVudGl0eSJdLCJ0eXBlIjpbIlZlcmlmaWFibGVDcmVkZW50aWFsIiwiS1lDQU1MQXR0ZXN0YXRpb24iXSwiY3JlZGVudGlhbFN1YmplY3QiOnsiS1lDQU1MQXR0ZXN0YXRpb24iOnsiYXBwcm92YWxEYXRlIjoiMjAyMi0wMi0yOFQwMDoxNzoxMC40NjBaIiwicHJvY2VzcyI6Imh0dHBzOi8vdmVyaXRlLmlkL3NjaGVtYXMvZGVmaW5pdGlvbnMvMS4wLjAva3ljYW1sL3VzYSIsInR5cGUiOiJLWUNBTUxBdHRlc3RhdGlvbiJ9LCJpZCI6ImRpZDprZXk6elEzc2hhV0JLZ0tmbzJ5azJubmNhaGNwWGpkcktWeEUyVkIzQ3pFdTJNaEp3V2NaWCJ9LCJpc3N1YW5jZURhdGUiOiIyMDIyLTAyLTI4VDAwOjE3OjEwLjQ2MFoifX0.ROO69OtvOGDE2FyEtZOk1XFj6VNt0PjSnwW2m5_r4FSFm80NHPfDPt6Te19H3jqUi3cpavHXnKfTN-WNDt0urg"
     ]
+  }
+}
+```
+
+The `verifiableCredential` contains the credential in JWt format. And that can be decoded into a json blob (A complete json is [here](./jsons/vc.json)). 
+
+```json
+{
+  "sub": "did:key:zQ3shv378PvkMuRrYMGFV9a3MtKpJkteqb2dUbQMEMvtWc2tE",
+  "nbf": 1646007430,
+  "iss": "did:key:zQ3shaWBKgKfo2yk2nncahcpXjdrKVxE2VB3CzEu2MhJwWcZX",
+  "exp": 1646612230,
+  "vc": {
+    "@context": [
+      "https://www.w3.org/2018/credentials/v1",
+      "https://verity.id/identity"
+    ],
+    "type": [
+      "VerifiableCredential",
+      "KYCAMLAttestation"
+    ],
+    "credentialSubject": {
+      "KYCAMLAttestation": {
+        "approvalDate": "2022-02-28T00:17:10.460Z",
+        "process": "https://verite.id/schemas/definitions/1.0.0/kycaml/usa",
+        "type": "KYCAMLAttestation"
+      },
+      "id": "did:key:zQ3shaWBKgKfo2yk2nncahcpXjdrKVxE2VB3CzEu2MhJwWcZX"
+    },
+    "issuanceDate": "2022-02-28T00:17:10.460Z"
   }
 }
 ```
@@ -334,7 +228,6 @@ https://verifier-sandbox.circle.com
 
 
 
-
 Request Body:
 
 
@@ -353,10 +246,9 @@ Response Body:
 
 ```json
 {
-   "challengeTokenUrl": "https://host/verifications/7ad5fb55-85d6-435d-afa7-d8a00ed5f89d"
+   "challengeTokenUrl": "https://<host>/verifications/7ad5fb55-85d6-435d-afa7-d8a00ed5f89d"
 }
 ```
-
 
 
 ### GET `/verifications/<id>`
@@ -365,7 +257,6 @@ Response Body:
 **Description: **This endpoint is called by the Credential Holder (it is the “`challengeTokenUrl`” from POST /verifications). This endpoint returns a fully formed Verification Offer (Presentation Request), which describes what information is required to pass this verification.  The Credential Holder will use this information and submit their Credentials to the “**<code>reply_url</code></strong>” defined in the body.  
 
 See: [https://verity.id/docs/patterns/verification-flow#presentation-requests-and-definitions](https://verity.id/docs/patterns/verification-flow#presentation-requests-and-definitions)
-
 
 
 Response Body:
@@ -571,3 +462,7 @@ Response Body:
   "message": "Invalid Verifiable Credential"
 }
 ```
+
+
+# Sample codes
+We prepare two python scripts ([issuer-test.py](./samplecodes/issuer-test.py) and [verifier-test.py](./samplecodes/verifier-test.py)) to help developers to understand the two services previously. 

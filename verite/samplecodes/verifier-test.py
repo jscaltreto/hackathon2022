@@ -17,7 +17,7 @@ import jwt
 import ssl
 import sys
 
-with open('params.json') as reader:
+with open('verifier-params.json') as reader:
     params_data = reader.read()
 params = json.loads(params_data)
 did = params['did']
@@ -26,10 +26,9 @@ host_port = params['host_port']
 
 verification_endpoint =  "/verifications"
 
-# host_port = "ded3-131-226-33-187.ngrok.io"
-host_port = "verifier-sandbox.circle.com"
-# conn = http.client.HTTPConnection(host_port)
-conn = http.client.HTTPSConnection(host_port)
+# host_port = "verifier-sandbox.circle.com"
+# conn = http.client.HTTPSConnection(host_port)
+conn = http.client.HTTPConnection(host_port)
 
 data = json.loads("""
 {
@@ -107,7 +106,7 @@ data['vp']['holder'] = did
 print("==================== vp ====================")
 print(json.dumps(data, indent=2))
 
-with open('private-key.pkcs1.pem') as reader:
+with open('./wallet-private-key.pkcs1.pem') as reader:
     private_key = reader.read()
 
 headers = {'Content-type': 'text/plain'}
