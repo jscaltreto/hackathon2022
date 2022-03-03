@@ -96,7 +96,7 @@ jwt_string = res.read().decode('utf-8')
 print("\n\n============= response in jwt ==========");
 print(jwt_string)
 
-public_key_file = '../issuer/src/main/resources/secrets/verity-issuer/test-public-key.pem'
+public_key_file = './issuer-public-key.pem'
 with open(public_key_file) as f:
     public_key = f.read()
 decoded_payload = jwt.decode(jwt_string, public_key, algorithms=["ES256K"])
