@@ -1,5 +1,7 @@
 # Verite Services and APIs
 
+*Note*: This API is available for testing purposes only. We do not conduct KYC/AML checks on our users. Clients who request a credential will not be subjected to KYC/AML checks.
+
 The Verite product motivation and protocol can be seen at [https://verite.id/](https://verite.id/). 
 
 Our services are built based on the protocol defined by [https://verite.id/](https://verite.id/). Our services are not interacted with any service there.
