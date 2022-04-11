@@ -17,9 +17,9 @@ import jwt
 import ssl
 import sys
 
-credential_offer_endpoint =  "/api/v1/issuance/manifest/kyc"
+credential_offer_endpoint =  "/api/v1/issuance/manifest/kyc/test-string"
 
-conn = http.client.HTTPSConnection("localhost:10050", context = ssl._create_unverified_context())
+conn = http.client.HTTPSConnection("issuer-sandbox.circle.com")
 conn.request("GET", credential_offer_endpoint)
 res = conn.getresponse()
 if res.status != 200:
