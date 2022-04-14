@@ -26,9 +26,7 @@ host_port = params['host_port']
 
 verification_endpoint =  "/verifications"
 
-# host_port = "verifier-sandbox.circle.com"
-# conn = http.client.HTTPSConnection(host_port)
-conn = http.client.HTTPConnection(host_port)
+conn = http.client.HTTPSConnection(host_port)
 
 data = json.loads("""
 {
@@ -42,7 +40,7 @@ print("======================= Step 0 ====================")
 conn.request("POST", verification_endpoint, json.dumps(data), headers)
 res = conn.getresponse()
 if res.status >= 300:
-  print("Failed to get CredentialOffer", res.status, res.reason)
+  print("Failed to get CredentialOffer", res.status, res.read().decode('utf-8'))
   sys.exit(1)
 res_data = res.read().decode('utf-8')
 credential_application = json.loads(res_data)
@@ -54,7 +52,7 @@ print("======================= Step 1 ====================")
 conn.request("GET", challenge_url)
 res = conn.getresponse()
 if res.status >= 300:
-  print("Failed to get Credential verification", res.status, res.reason)
+  print("Failed to get Credential verification", res.status, res.read().decode('utf-8'))
   sys.exit(1)
 res_data = res.read().decode('utf-8')
 verification_offer = json.loads(res_data)
@@ -118,7 +116,7 @@ print("======================= Step 2 ====================")
 conn.request("POST", verification_offer['reply_url'], jwt_string, headers)
 res = conn.getresponse()
 if res.status >= 300:
-  print("Failed to do verification", res.status, res.reason)
+  print("Failed to do verification", res.status, res.read().decode('utf-8'))
   sys.exit(1)
 
 res_data = res.read().decode('utf-8')
